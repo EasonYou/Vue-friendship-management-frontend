@@ -43,7 +43,7 @@
 .home-col {
 	#cont {
 		width: 100%;
-		height: 500px;
+		height: 100%;
 	}
 }
 </style>
