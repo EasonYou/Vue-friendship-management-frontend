@@ -1,14 +1,17 @@
 <template>
-  <el-col :span="8" class="login-col">
+<el-col :span="8" class="login-col">
     <div class="input-container">
-      <el-input
-        placeholder="请输入账号" v-model = "account">
-      </el-input>
-      <el-input
-        placeholder="请输入密码" v-model = "password" type="password">
-      </el-input>
-      <el-button type="primary" @click="login">登陆</el-button>
-      <el-checkbox>记住密码</el-checkbox>
+      <el-form :model="loginData" :rules="rules" ref="ruleForm2" label-position="left" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="用户名" prop="account">
+          <el-input v-model="loginData.account" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="loginData.password" auto-complete="off"></el-input>
+        </el-form-item>
+        </el-form-item>
+          <el-button type="primary" @click="login">提交</el-button>
+
+      </el-form>
     </div>
   </el-col>
 </template>
@@ -21,27 +24,36 @@ export default {
   name: 'hello',
   data () {
     return {
-      account: '',
-      password: ''
+      loginData: {
+        account: '',
+        password: ''
+      },
+      rules: {
+        account: [
+          {
+            required: true,
+            message: '请输入账号',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
     login () {
-      let self = this
-      axios.post('http://localhost:3000/api/login',querystring.stringify({
-       account: self.account,
-       password: utility.md5(self.password)
-      }))
-      .then(function (response) {
-        if(response.data.status === 200) {
-          self.$router.push({ name: 'Home', params: { userId: 123 }})
-        } else {
-            self.$message.error('用户名或密码错误！');
-        }
+      console.log(this)
+      this.$store.dispatch('login', {
+        account: this.loginData.account,
+        password: this.loginData.password,
+        vue: this
       })
-      .catch(function (error) {
-       console.log(error);
-      });
     }
   }
 }
@@ -56,13 +68,19 @@ export default {
       transform: translate(-50%, -90%);
       float: none;
       box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+      display: flex;
       .input-container {
           width: 70%;
           margin: 0 auto;
           padding: 80px 0;
-          .el-input {
-              margin-bottom: 15px;
+          .el-form-item {
+            // margin: 0;
+            .el-input {
+              // margin-bottom: 15px;
+              // width: 70%;
+           }
           }
+          
       }
       
   }

@@ -1,10 +1,10 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import homePage from './modules/home-page'
+import userData from './modules/user-data'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
 	modules: {
-		homePage
+		userData
 	}
 })
