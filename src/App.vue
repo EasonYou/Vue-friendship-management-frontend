@@ -3,6 +3,7 @@
   	<el-row class="head-row">
   		<div class="head">
   			Vue Friendship Management
+        <el-button type="text" size="large" @click="logout" v-if="isLogin">登出</el-button>
   		</div>
   	</el-row>
   	<el-row class="app-row">
@@ -25,6 +26,11 @@ export default {
 			isLogin: true
 		}
 	},
+  methods: {
+    logout () {
+      this.$store.dispatch('logout', this)
+    }
+  },
 	created() {
 		console.log(this.$route)
 		if(this.$route.name === 'Login') {
@@ -72,6 +78,14 @@ html, body {
   		color: #fff;
   		line-height: 80px;
   		padding-left: 50px;
+      .el-button {
+        color: #fff;
+        // float: right;
+        position: absolute;
+        right: 100px;
+        top: 20px;
+        z-index: 100;
+      }
   	}
   }
   .app-row {
@@ -83,8 +97,28 @@ html, body {
 		.el-col-21 {
 			margin-left: 12.5%;
 			height: 100%;
-			overflow: scroll;
+			overflow-y: scroll;
 		}
+    /*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+    .el-col-21::-webkit-scrollbar{
+        width: 10px;
+        height: 10px;
+        background-color: #f5f5f5;
+    }
+    /*定义滚动条的轨道，内阴影及圆角*/
+    .el-col-21::-webkit-scrollbar-track{
+        // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        // border-radius: 2px;
+        background-color: #f5f5f5;
+    }
+    /*定义滑块，内阴影及圆角*/
+    .el-col-21::-webkit-scrollbar-thumb{
+        /*width: 10px;*/
+        height: 20px;
+        border-radius: 4px;
+        // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #cacaca;
+    }
 	}
   .clearfix:before,
   .clearfix:after {

@@ -1,16 +1,29 @@
 <template>
 <el-col :span="8" class="login-col">
     <div class="input-container">
-      <el-form :model="loginData" :rules="rules" ref="ruleForm2" label-position="left" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="用户名" prop="account">
-          <el-input v-model="loginData.account" auto-complete="off"></el-input>
+      <el-form :model="loginData" 
+               :rules="rules" 
+               ref="ruleForm2" 
+               label-position="left" 
+               label-width="100px" 
+               class="demo-ruleForm">
+        <el-form-item label="用户名" 
+                      prop="account">
+          <el-input v-model="loginData.account" 
+                    auto-complete="off" 
+                    @keyup.enter.native="login">
+          </el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="loginData.password" auto-complete="off"></el-input>
+        <el-form-item label="密码" 
+                      prop="password">
+          <el-input type="password" 
+                    v-model="loginData.password" 
+                    auto-complete="off"  
+                    @keyup.enter.native="login"></el-input>
         </el-form-item>
         </el-form-item>
-          <el-button type="primary" @click="login">提交</el-button>
-
+          <el-button type="primary" 
+                     @click="login">登陆</el-button>
       </el-form>
     </div>
   </el-col>
@@ -54,6 +67,9 @@ export default {
         password: this.loginData.password,
         vue: this
       })
+    },
+    hehe () {
+      console.log('aaa')
     }
   }
 }
