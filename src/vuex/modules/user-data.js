@@ -5,7 +5,7 @@ import axios from 'axios'
 export default {
 	state: {
 		userLists: {
-			data: {}
+			data: []
 		}
 	},
 	getters: {
@@ -76,6 +76,10 @@ export default {
 				console.log('list', response)
 				contex.commit(types.STORE_USER_LIST, response.data.data)
 			})
+		},
+		edit (contex, vue) {
+			console.log(vue.$router)
+			vue.$router.push({ name: 'Edit', params: {id: '12'}})
 		}
 	}
 }
