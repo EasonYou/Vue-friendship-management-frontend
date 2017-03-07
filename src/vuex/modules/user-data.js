@@ -6,6 +6,9 @@ export default {
 	state: {
 		userLists: {
 			data: []
+		},
+		userDetail: {
+			data: {}
 		}
 	},
 	getters: {
@@ -14,6 +17,9 @@ export default {
 		},
 		userLists: state => {
 			return state.userLists.data
+		},
+		userDetail: state => {
+			return state.userDetail.data
 		}
 	},
 	mutations: {
@@ -22,6 +28,9 @@ export default {
 		},
 		STORE_USER_LIST (state, data) {
 			state.userLists.data = data
+		},
+		STORE_USER_DETAIL (state, data) {
+			state.userDetail.data = data
 		}
 	},
 	actions: {
@@ -34,13 +43,13 @@ export default {
 			}))
 			.then(function (response) {
 				console.log(response, 'res')
-			if(response.data.status === 200) {
-				localStorage.fs_admin_token = response.data.token
-				contex.commit(types.LOGIN, response.data.token)
-			 	vue.$router.push({ name: 'Home'})
-			} else {
-			    vue.$message.error('用户名或密码错误！');
-			}
+				if(response.data.status === 200) {
+					localStorage.fs_admin_token = response.data.token
+					contex.commit(types.LOGIN, response.data.token)
+				 	vue.$router.push({ name: 'Home'})
+				} else {
+				    vue.$message.error('用户名或密码错误！');
+				}
 			})
 			.catch(function (error) {
 			console.log(error);
@@ -64,6 +73,7 @@ export default {
 		},
 		getUserLists (contex, vue) {
 			console.log('contex',contex)
+			contex.commit(types.STORE_USER_LIST, [])
 			axios.post('http://localhost:3000/api/userLists',querystring.stringify({
 				token: localStorage.fs_admin_token
 			}))
@@ -77,9 +87,19 @@ export default {
 				contex.commit(types.STORE_USER_LIST, response.data.data)
 			})
 		},
-		edit (contex, vue) {
-			console.log(vue.$router)
-			vue.$router.push({ name: 'Edit', params: {id: '12'}})
+		edit (contex, data) {
+			axios.post('http://localhost:3000/api/userDetail/' + data.id,querystring.stringify({
+				token: localStorage.fs_admin_token,
+				id: data.id
+			}))
+			.then(function(response) {
+				if(response.data.status !== 200) {
+					data.vue.$message.error('获取列表失败！');
+					data.vue.$router.push({ name: 'Home'})
+					return
+				}
+				contex.commit(types.STORE_USER_DETAIL, response.data.data[0])
+			})
 		}
 	}
 }

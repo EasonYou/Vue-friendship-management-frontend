@@ -7,17 +7,17 @@
 	      <el-table-column
 	        prop="id"
 	        label="id"
-	        width="180">
+	        width="100">
 	      </el-table-column>
 	      <el-table-column
 	        prop="nickname"
 	        label="姓名"
-	        width="180">
+	        width="150">
 	      </el-table-column>
 	      <el-table-column
 	        prop="sex"
 	        label="性别"
-	        width="180">
+	        width="100">
 	      </el-table-column>
 	      <el-table-column
 	        prop="birthday"
@@ -61,10 +61,18 @@
 				this.$store.dispatch('logout', this)
 			},
 			handleEdit (index, row) {
-				this.$store.dispatch('edit', this)
+				console.log(index, row)
+				this.$router.push({ name: 'Edit', params: {id: row.id}})
 			},
 			handleDelete (index, row) {
 				console.log(index, row) 
+			}
+		},
+		filters: {
+			sexFilter () {
+				if(value === 0 ) {
+					return '男'
+				}
 			}
 		},
         created () {
