@@ -99,19 +99,19 @@ html, body {
 			overflow-y: scroll;
 		}
     /*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
-    .el-col-21::-webkit-scrollbar{
+    .slide::-webkit-scrollbar{
         width: 10px;
         height: 10px;
         background-color: #f5f5f5;
     }
     /*定义滚动条的轨道，内阴影及圆角*/
-    .el-col-21::-webkit-scrollbar-track{
+    .slide::-webkit-scrollbar-track{
         // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
         // border-radius: 2px;
         background-color: #f5f5f5;
     }
     /*定义滑块，内阴影及圆角*/
-    .el-col-21::-webkit-scrollbar-thumb{
+    .slide::-webkit-scrollbar-thumb{
         /*width: 10px;*/
         height: 20px;
         border-radius: 4px;
