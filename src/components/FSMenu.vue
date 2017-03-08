@@ -19,6 +19,7 @@
 	export default {
 		methods: {
 			toHome () {
+				this.$store.dispatch('getUserLists', this)
 				this.$router.push({name: 'Home'})
 			},
 			handleOpen(key, keyPath) {

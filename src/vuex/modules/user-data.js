@@ -100,6 +100,57 @@ export default {
 				}
 				contex.commit(types.STORE_USER_DETAIL, response.data.data[0])
 			})
+		},
+		block (contex, data) {
+			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
+				token: localStorage.fs_admin_token,
+				id: data.id,
+				state: 'invalid'
+			}))
+			.then(function(response) {
+				contex.dispatch('getUserLists', data.vue)
+				if(response.data.status !== 200) {
+					data.vue.$message.error('请重试');
+					return
+				}
+				data.vue.$message.success('拉黑成功');
+			})
+		},
+		unblock (contex, data) {
+			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
+				token: localStorage.fs_admin_token,
+				id: data.id,
+				state: 'valid'
+			}))
+			.then(function(response) {
+				contex.dispatch('getUserLists', data.vue)
+				if(response.data.status !== 200) {
+					data.vue.$message.error('请重试');
+					return
+				}
+				data.vue.$message.success('解封成功');
+			})
+		},
+		submitEdit (contex, vue) {
+			let data = contex.state.userDetail.data
+			console.log(data)
+			axios.post('http://localhost:3000/api/userDataSubmit/' + data.id,querystring.stringify({
+				token: localStorage.fs_admin_token,
+				nickname: data.nickname,
+				state: data.state,
+				phone: data.phone,
+				address: data.address,
+				email: data.email,
+				sex: data.sex
+			}))
+			.then(function(response) {
+				console.log('shahahah')
+				if(response.data.status !== 200) {
+					vue.$message.error('请重试');
+					return
+				}
+				vue.$message.success('解封成功');
+			})
 		}
 	}
 }

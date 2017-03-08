@@ -22,6 +22,11 @@
 	        width="100">
 	      </el-table-column>
 	      <el-table-column
+	        prop="state"
+	        label="用户状态"
+	        width="100">
+	      </el-table-column>
+	      <el-table-column
 	        prop="nickname"
 	        label="昵称"
 	        width="150">
@@ -33,10 +38,8 @@
 	      </el-table-column>
 	      <el-table-column
 	        label="性别"
-	        width="100">
-	        <template scope="scope">
-	        	{{ scope.row.sex | sexFilter}}
-	        </template>
+	        width="100"
+	        :formatter="sexFilter">
 	      </el-table-column>
 	      <el-table-column
 	        prop="birthday"
@@ -87,7 +90,8 @@
 	        width="160">
 	        <template scope="scope">
 		        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-		       	<el-button size="small" type="danger" @click="handleDelete(scope.$index, scope)">黑名单</el-button>
+		       	<el-button size="small" v-if="scope.row.state === 'valid'" type="danger" @click="handleBlock(scope.$index, scope.row)">黑名单</el-button>
+		       	<el-button size="small" v-if="scope.row.state === 'invalid'"type="success" @click="unBlock(scope.$index, scope.row)">解封</el-button>
 		     </template>
 	      </el-table-column>
 	    </el-table>
@@ -124,22 +128,32 @@
 				console.log(index, row)
 				this.$router.push({ name: 'Edit', params: {id: row.id}})
 			},
-			handleDelete (index, row) {
-				console.log(index, row) 
+			handleBlock (index, row) {
+				this.$store.dispatch('block', {
+					vue: this,
+					id: row.id
+				})
+			},
+			unBlock (index, row) {
+				this.$store.dispatch('unblock', {
+					vue: this,
+					id: row.id
+				})
 			},
 			handleSelectionChange (value) {
 				console.log(value)
+			},
+			sexFilter (row) {
+				if(row.sex === 0 ) {
+					return '男'
+				}
+				if(row.sex === 1) {
+					return '女'
+				}
+				console.log(row)
 			}
 		},
 		filters: {
-			sexFilter (value) {
-				if(value === 0 ) {
-					return '男'
-				}
-				if(value === 1 ) {
-					return '女'
-				}
-			},
 			dateFilter (value) {
 				if(!value) {
 					return '无'
