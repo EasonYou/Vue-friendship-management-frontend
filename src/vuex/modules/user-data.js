@@ -37,10 +37,10 @@ export default {
 		login (contex, data) {
 			let vue = data.vue
 			console.log(data)
-			axios.post('http://localhost:3000/api/login',querystring.stringify({
+			axios.post('http://localhost:3000/api/login',{
 				account: data.account,
 				password: utility.md5(data.password)
-			}))
+			})
 			.then(function (response) {
 				console.log(response, 'res')
 				if(response.data.status === 200) {
@@ -58,9 +58,9 @@ export default {
 		logout (contex, vue) {
 			console.log(vue)
 			console.log('contex',contex)
-			axios.post('http://localhost:3000/api/logout',querystring.stringify({
+			axios.post('http://localhost:3000/api/logout',{
 				token: localStorage.fs_admin_token
-			}))
+			})
 			.then(function(response) {
 				if(response.data.status === 200) {
 					vue.$message.success('登出成功！');
@@ -74,9 +74,9 @@ export default {
 		getUserLists (contex, vue) {
 			console.log('contex',contex)
 			contex.commit(types.STORE_USER_LIST, [])
-			axios.post('http://localhost:3000/api/userLists',querystring.stringify({
+			axios.post('http://localhost:3000/api/userLists',{
 				token: localStorage.fs_admin_token
-			}))
+			})
 			.then(function(response) {
 				if(response.data.status !== 200) {
 					vue.$message.error('登陆超时，请重新登陆！');
@@ -88,10 +88,10 @@ export default {
 			})
 		},
 		edit (contex, data) {
-			axios.post('http://localhost:3000/api/userDetail/' + data.id,querystring.stringify({
+			axios.post('http://localhost:3000/api/userDetail/' + data.id,{
 				token: localStorage.fs_admin_token,
 				id: data.id
-			}))
+			})
 			.then(function(response) {
 				if(response.data.status !== 200) {
 					data.vue.$message.error('获取列表失败！');
@@ -110,12 +110,14 @@ export default {
 			}
 			console.log(ids)
 			let date = Date.parse(new Date())/1000
-			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
+			axios.post('http://localhost:3000/api/block/' + data.id,{
 				token: localStorage.fs_admin_token,
-				ids: ids,
-				state: 'invalid',
-				dtime: date
-			}))
+				data: {
+					id: ids,
+					state: 'valid',
+					dtime: date
+				}
+			})
 			.then(function(response) {
 				// contex.dispatch('getUserLists', data.vue)
 				if(response.data.status !== 200) {
@@ -137,12 +139,14 @@ export default {
 			for(let i=0;i<rows.length;i ++) {
 				ids.push(rows[i].id)
 			}
-			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
+			axios.post('http://localhost:3000/api/block/' + data.id,{
 				token: localStorage.fs_admin_token,
-				ids: ids,
-				state: 'valid',
-				dtime: 0
-			}))
+				data: {
+					id: ids,
+					state: 'valid',
+					dtime: 0
+				}
+			})
 			.then(function(response) {
 				// contex.dispatch('getUserLists', data.vue)
 				if(response.data.status !== 200) {
@@ -160,16 +164,18 @@ export default {
 		submitEdit (contex, vue) {
 			let data = contex.state.userDetail.data
 			console.log(data)
-			axios.post('http://localhost:3000/api/userDataSubmit/' + data.id,querystring.stringify({
+			axios.post('http://localhost:3000/api/userDataSubmit/' + data.id,{
 				token: localStorage.fs_admin_token,
-				nickname: data.nickname,
-				state: data.state,
-				phone: data.phone,
-				address: data.address,
-				email: data.email,
-				sex: data.sex,
-				birthday: data.birthday
-			}))
+				data: {
+					nickname: data.nickname,
+					state: data.state,
+					phone: data.phone,
+					address: data.address,
+					email: data.email,
+					sex: data.sex,
+					birthday: data.birthday
+				}
+			})
 			.then(function(response) {
 				console.log('shahahah')
 				if(response.data.status !== 200) {
