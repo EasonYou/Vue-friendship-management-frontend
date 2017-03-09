@@ -24,6 +24,9 @@
 		  <el-form-item label="性别（0男1女）">
 		    <el-input v-model="userDetail.sex"></el-input>
 		  </el-form-item>
+		  <el-form-item label="生日">
+		    <el-input v-model="userDetail.birthday"></el-input>
+		  </el-form-item>
 		  <el-form-item label="封面图片地址">
 		    <el-input :disabled="true" v-model="userDetail.pic_cover"></el-input>
 		  </el-form-item>
@@ -66,6 +69,18 @@
 	methods: {
 		submitForm (formName) {
 			this.$store.dispatch('submitEdit', this)
+		}
+	},
+	filters: {
+		dateFilter (value) {
+			if(!value) {
+				return '无'
+			}
+			let date = new Date(value * 100)
+			let y = date.getFullYear()
+			let m = date.getMonth() + 1
+			let d = date.getDate()
+			return y + '-' + m + '-' + d
 		}
 	}
 }

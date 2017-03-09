@@ -63,7 +63,7 @@ export default {
 			}))
 			.then(function(response) {
 				if(response.data.status === 200) {
-					vue.$message('登出成功！');
+					vue.$message.success('登出成功！');
 					vue.$router.push({ name: 'Login'})
 					return
 				}
@@ -102,32 +102,58 @@ export default {
 			})
 		},
 		block (contex, data) {
+			console.log(data.row)
+			let rows = data.row
+			let ids = []
+			for(let i=0;i<rows.length;i ++) {
+				ids.push(rows[i].id)
+			}
+			console.log(ids)
+			let date = Date.parse(new Date())/1000
 			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
 				token: localStorage.fs_admin_token,
-				id: data.id,
-				state: 'invalid'
+				ids: ids,
+				state: 'invalid',
+				dtime: date
 			}))
 			.then(function(response) {
-				contex.dispatch('getUserLists', data.vue)
+				// contex.dispatch('getUserLists', data.vue)
 				if(response.data.status !== 200) {
 					data.vue.$message.error('请重试');
 					return
 				}
+				for(let i=0 ;i<data.row.length ; i++) {
+					data.row[i].dtime = date
+					data.row[i].state= "invalid"
+				}
+				data.row = []
+				console.log(data.row)
 				data.vue.$message.success('拉黑成功');
 			})
 		},
 		unblock (contex, data) {
+			let rows = data.row
+			let ids = []
+			for(let i=0;i<rows.length;i ++) {
+				ids.push(rows[i].id)
+			}
 			axios.post('http://localhost:3000/api/block/' + data.id,querystring.stringify({
 				token: localStorage.fs_admin_token,
-				id: data.id,
-				state: 'valid'
+				ids: ids,
+				state: 'valid',
+				dtime: 0
 			}))
 			.then(function(response) {
-				contex.dispatch('getUserLists', data.vue)
+				// contex.dispatch('getUserLists', data.vue)
 				if(response.data.status !== 200) {
 					data.vue.$message.error('请重试');
 					return
 				}
+				for(let i=0 ;i<data.row.length ; i++) {
+					data.row[i].dtime = 0
+					data.row[i].state= "valid"
+				}
+				console.log(data.row)
 				data.vue.$message.success('解封成功');
 			})
 		},
@@ -141,7 +167,8 @@ export default {
 				phone: data.phone,
 				address: data.address,
 				email: data.email,
-				sex: data.sex
+				sex: data.sex,
+				birthday: data.birthday
 			}))
 			.then(function(response) {
 				console.log('shahahah')
@@ -149,7 +176,8 @@ export default {
 					vue.$message.error('请重试');
 					return
 				}
-				vue.$message.success('解封成功');
+				vue.$message.success('修改成功！');
+				vue.$router.push({ name: 'Home'})
 			})
 		}
 	}

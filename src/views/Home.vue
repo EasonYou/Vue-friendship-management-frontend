@@ -2,7 +2,8 @@
 	<el-col :span="21" class="home-col slide">
 		<div class="table-header">
 			<h2 class="table-header-desc">总用户名单</h2>
-			<el-button type="danger" :plain="true">拉黑选中名单</el-button>
+			<el-button type="danger" :plain="true" @click="blockAll('block')">拉黑选中名单</el-button>
+			<el-button type="success" :plain="true" @click="blockAll('unblock')">解封选中名单</el-button>
 		</div>
 		<el-table
 		  class="slide"
@@ -37,6 +38,11 @@
 	        width="150">
 	      </el-table-column>
 	      <el-table-column
+	        prop="email"
+	        label="邮箱地址"
+	        width="200">
+	      </el-table-column>
+	      <el-table-column
 	        label="性别"
 	        width="100"
 	        :formatter="sexFilter">
@@ -62,6 +68,14 @@
 	      </el-table-column>
 	      <el-table-column
 	        prop="birthday"
+	        label="封号时间"
+	        width="150">
+	        <template scope="scope">
+	        	{{ scope.row.dtime | dateFilter}}
+	        </template>
+	      </el-table-column>
+	      <el-table-column
+	        prop="birthday"
 	        label="创建时间"
 	        width="150">
 	        <template scope="scope">
@@ -74,14 +88,6 @@
 	        width="150">
 	        <template scope="scope">
 	        	{{ scope.row.mtime | dateFilter}}
-	        </template>
-	      </el-table-column>
-	      <el-table-column
-	        prop="birthday"
-	        label="删除时间"
-	        width="150">
-	        <template scope="scope">
-	        	{{ scope.row.dtime | dateFilter}}
 	        </template>
 	      </el-table-column>
 		  <el-table-column
@@ -109,7 +115,8 @@
 	export default {
 		data () {
 			return {
-				currentPage: 1
+				currentPage: 1,
+				selection: []
 			}
 		},
 		components: {
@@ -131,17 +138,33 @@
 			handleBlock (index, row) {
 				this.$store.dispatch('block', {
 					vue: this,
-					id: row.id
+					row: [row]
 				})
 			},
 			unBlock (index, row) {
 				this.$store.dispatch('unblock', {
 					vue: this,
-					id: row.id
+					row: [row]
+				})
+			},
+			blockAll (type) {
+				if(this.selection.length === 0) {
+					this.$message.error('请选择用户')
+					return
+				}
+				this.$store.dispatch(type, {
+					vue: this,
+					row: this.selection
+				})
+			},
+			unblockAll () {
+				this.$store.dispatch('unblock', {
+					vue: this,
+					row: this.selection
 				})
 			},
 			handleSelectionChange (value) {
-				console.log(value)
+				this.selection = value
 			},
 			sexFilter (row) {
 				if(row.sex === 0 ) {
@@ -158,7 +181,7 @@
 				if(!value) {
 					return '无'
 				}
-				let date = new Date(value * 100)
+				let date = new Date(value * 1000)
 				let y = date.getFullYear()
 				let m = date.getMonth() + 1
 				let d = date.getDate()
@@ -175,6 +198,7 @@
 <style lang="scss">
 .home-col {
 	position: relative;
+	padding: 0 30px;
 	.el-table {
 		margin-top: 60px;
 		text-align: left;
@@ -197,7 +221,10 @@
 		.el-button {
 			// margin-right: 15px;
 			position: absolute;
-			right: 20px;
+			right: 60px;
+		}
+		.el-button:last-child {
+			right: 180px;
 		}
 	}
 	.el-pagination {
