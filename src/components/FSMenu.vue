@@ -17,9 +17,18 @@
 </template>
 <script>
 	export default {
+		computed: {
+			currentPage () {
+				return this.$store.getters.currentPage
+			}
+		},
 		methods: {
 			toHome () {
-				this.$store.dispatch('getUserLists', this)
+				console.log(this.$store.getters.currentPage)
+				this.$store.dispatch('getUserLists', {
+					vue: this,
+					page: this.currentPage
+				})
 				this.$router.push({name: 'Home'})
 			},
 			handleOpen(key, keyPath) {

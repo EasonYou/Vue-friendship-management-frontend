@@ -9,7 +9,9 @@ export default {
 		},
 		userDetail: {
 			data: {}
-		}
+		},
+		totalPage: 1,
+		currentPage: 1
 	},
 	getters: {
 		token: state => {
@@ -20,6 +22,12 @@ export default {
 		},
 		userDetail: state => {
 			return state.userDetail.data
+		},
+		totalPage: state => {
+			return state.totalPage
+		},
+		currentPage: state => {
+			return state.currentPage
 		}
 	},
 	mutations: {
@@ -31,6 +39,12 @@ export default {
 		},
 		STORE_USER_DETAIL (state, data) {
 			state.userDetail.data = data
+		},
+		CHANGE_PAGINATION (state, data) {
+			state.totalPage = data
+		},
+		CHANGE_CURRENT_PAGE (state, data) {
+			state.currentPage = data
 		}
 	},
 	actions: {
@@ -71,20 +85,22 @@ export default {
 				contex.commit(types.STORE_USER_LIST, response.data.data)
 			})
 		},
-		getUserLists (contex, vue) {
-			console.log('contex',contex)
+		getUserLists (contex, data) {
+			console.log(data.page)
 			contex.commit(types.STORE_USER_LIST, [])
 			axios.post('http://localhost:3000/api/userLists',{
-				token: localStorage.fs_admin_token
+				token: localStorage.fs_admin_token,
+				page: data.page
 			})
 			.then(function(response) {
 				if(response.data.status !== 200) {
-					vue.$message.error('登陆超时，请重新登陆！');
-					vue.$router.push({ name: 'Login'})
+					data.vue.$message.error('登陆超时，请重新登陆！');
+					data.vue.$router.push({ name: 'Login'})
 					return
 				}
 				console.log('list', response)
 				contex.commit(types.STORE_USER_LIST, response.data.data)
+				contex.commit(types.CHANGE_PAGINATION, response.data.count)
 			})
 		},
 		edit (contex, data) {

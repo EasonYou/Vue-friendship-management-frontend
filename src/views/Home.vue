@@ -103,9 +103,10 @@
 	    </el-table>
 	    <el-pagination
 	      :current-page="currentPage"
-	      :page-size="100"
+	      :page-size="2"
 	      layout="prev, pager, next, jumper"
-	      :total="500">
+	      :total="totalPage"
+	      @current-change="handleCurrentChange">
 	    </el-pagination>
 	</el-col>
 </template>
@@ -115,7 +116,6 @@
 	export default {
 		data () {
 			return {
-				currentPage: 1,
 				selection: []
 			}
 		},
@@ -125,6 +125,12 @@
 		computed: {
 			userLists () {
 				return this.$store.getters.userLists
+			},
+			totalPage () {
+				return this.$store.getters.totalPage
+			},
+			currentPage () {
+				return this.$store.getters.currentPage
 			}
 		},
 		methods: {
@@ -174,6 +180,11 @@
 					return '女'
 				}
 				console.log(row)
+			},
+			handleCurrentChange (val) {
+				this.$store.dispatch('getUserLists', {
+					vue: this,
+					page: val})
 			}
 		},
 		filters: {
@@ -189,7 +200,10 @@
 			}
 		},
         created () {
-            this.$store.dispatch('getUserLists', this)
+            this.$store.dispatch('getUserLists', {
+            	vue:this,
+            	page: 1
+            })
         },
 		mounted () {
 		}
