@@ -118,19 +118,19 @@ export default {
 			})
 		},
 		block (contex, data) {
-			console.log(data.row)
+			console.log(data.row, 'hahaha')
 			let rows = data.row
 			let ids = []
 			for(let i=0;i<rows.length;i ++) {
 				ids.push(rows[i].id)
 			}
-			console.log(ids)
+			console.log(ids, 'heiheihei')
 			let date = Date.parse(new Date())/1000
-			axios.post('http://localhost:3000/api/block/' + data.id,{
+			axios.post('http://localhost:3000/api/block/',{
 				token: localStorage.fs_admin_token,
 				data: {
 					id: ids,
-					state: 'valid',
+					state: 'invalid',
 					dtime: date
 				}
 			})
@@ -145,7 +145,6 @@ export default {
 					data.row[i].state= "invalid"
 				}
 				data.row = []
-				console.log(data.row)
 				data.vue.$message.success('拉黑成功');
 			})
 		},
@@ -155,7 +154,7 @@ export default {
 			for(let i=0;i<rows.length;i ++) {
 				ids.push(rows[i].id)
 			}
-			axios.post('http://localhost:3000/api/block/' + data.id,{
+			axios.post('http://localhost:3000/api/block/',{
 				token: localStorage.fs_admin_token,
 				data: {
 					id: ids,

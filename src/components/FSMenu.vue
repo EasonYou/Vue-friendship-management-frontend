@@ -6,7 +6,7 @@
 	      <el-submenu index="2">
 	        <template slot="title"><i class="el-icon-message"></i>分析表</template>
 	        <el-menu-item-group>
-	          <el-menu-item index="1-1">男女比例</el-menu-item>
+	          <el-menu-item index="1-1" @click="genderRatio">男女比例</el-menu-item>
 	          <el-menu-item index="1-2">年龄</el-menu-item>
 	        </el-menu-item-group>
 	      </el-submenu>
@@ -31,11 +31,14 @@
 				})
 				this.$router.push({name: 'Home'})
 			},
-			handleOpen(key, keyPath) {
+			handleOpen (key, keyPath) {
 		        console.log(key, keyPath);
 		    },
-		    handleClose(key, keyPath) {
+		    handleClose (key, keyPath) {
 		        console.log(key, keyPath);
+		    },
+		    genderRatio () {
+		    	this.$router.push({name: 'Charts', params: { id: 'genderRatio' }})
 		    }
 		}
 	}
