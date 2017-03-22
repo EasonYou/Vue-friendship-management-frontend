@@ -24,11 +24,12 @@
 		},
 		methods: {
 			toHome () {
-				console.log(this.$store.getters.currentPage)
 				this.$store.dispatch('getUserLists', {
 					vue: this,
-					page: this.currentPage
+					page: this.currentPage,
+					type: 1
 				})
+				this.$store.dispatch('changeCurrentPage')
 				this.$router.push({name: 'Home'})
 			},
 			handleOpen (key, keyPath) {

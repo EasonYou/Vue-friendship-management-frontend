@@ -48,6 +48,9 @@ export default {
 		}
 	},
 	actions: {
+		changeCurrentPage (contex) {
+			contex.commit(types.CHANGE_CURRENT_PAGE, 1)
+		},
 		login (contex, data) {
 			let vue = data.vue
 			console.log(data)
@@ -86,7 +89,7 @@ export default {
 			})
 		},
 		getUserLists (contex, data) {
-			console.log(data.page)
+			console.log(data.type)
 			contex.commit(types.STORE_USER_LIST, [])
 			axios.post('http://localhost:3000/api/userLists',{
 				token: localStorage.fs_admin_token,
