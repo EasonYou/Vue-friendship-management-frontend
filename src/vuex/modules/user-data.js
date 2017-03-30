@@ -42,15 +42,9 @@ export default {
 		},
 		CHANGE_PAGINATION (state, data) {
 			state.totalPage = data
-		},
-		CHANGE_CURRENT_PAGE (state, data) {
-			state.currentPage = data
 		}
 	},
 	actions: {
-		changeCurrentPage (contex) {
-			contex.commit(types.CHANGE_CURRENT_PAGE, 1)
-		},
 		login (contex, data) {
 			let vue = data.vue
 			console.log(data)

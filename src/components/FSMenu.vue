@@ -7,7 +7,7 @@
 	        <template slot="title"><i class="el-icon-message"></i>分析表</template>
 	        <el-menu-item-group>
 	          <el-menu-item index="1-1" @click="genderRatio">男女比例</el-menu-item>
-	          <el-menu-item index="1-2">年龄</el-menu-item>
+	          <el-menu-item index="1-2" @click="numberRatio">年龄</el-menu-item>
 	        </el-menu-item-group>
 	      </el-submenu>
 	      <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
@@ -24,12 +24,6 @@
 		},
 		methods: {
 			toHome () {
-				this.$store.dispatch('getUserLists', {
-					vue: this,
-					page: this.currentPage,
-					type: 1
-				})
-				this.$store.dispatch('changeCurrentPage')
 				this.$router.push({name: 'Home'})
 			},
 			handleOpen (key, keyPath) {
@@ -40,6 +34,9 @@
 		    },
 		    genderRatio () {
 		    	this.$router.push({name: 'Charts', params: { id: 'genderRatio' }})
+		    },
+		    numberRatio () {
+		    	this.$router.push({name: 'Charts', params: { id: 'numberLine' }})
 		    }
 		}
 	}

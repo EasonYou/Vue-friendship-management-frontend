@@ -28,6 +28,15 @@ export default {
 					console.log(_.genderRatio)
 					myChart.setOption(_.options);
 				})
+		},
+		getNumberRatio(contex, _) {
+			var date = ['2017-6-6', '2016-6-7','2017-6-8', '2016-6-9','2017-6-10', '2016-6-11']
+			var data = [1 , 2, 3, 4, 5, 6]
+			_.options.xAxis.data = date
+			_.options.series[0].data = data
+			console.log(_.options)
+			var myChart = echarts.init(document.getElementsByClassName('charts')[0]);
+			myChart.setOption(_.options);
 		}
 	}
 }
