@@ -23,7 +23,7 @@
 			}
 			if(id === 'numberLine') {
 				console.log('hhe')
-				this.$store.dispatch('getNumberRatio', {
+				this.$store.dispatch('getNumberLine', {
 					vue: this,
 					id: id,
 					options: charts.line
@@ -35,7 +35,21 @@
 		watch: {
 			$route (to, from) {
 				console.log(to, from)
-			}
+				if(to.params.id === 'genderRatio') {
+					this.$store.dispatch('getGenderRatio', {
+						vue: this,
+						id: to.params.id,
+						options: charts.pie
+					})
+				}
+				if(to.params.id === 'numberLine') {
+					this.$store.dispatch('getNumberLine', {
+						vue: this,
+						id: to.params.id,
+						options: charts.line
+					})
+				}
+ 			}
 		}
 	}
 </script>
@@ -45,7 +59,7 @@
 		height: 100%;
 		.charts {
 			width: 100%;
-			height: 91.6%;
+			height: 90%;
 			// margin: 100px;
 		}
 	}

@@ -1,11 +1,11 @@
 module.exports = {
-	backgroundColor: '#2c343c',
+	backgroundColor: '#fff',
 	title: {
 		text: 'Customized Pie',
 		left: 'center',
 		top: 20,
 		textStyle: {
-			color: '#ccc'
+			color: '#000'
 		}
 	},
 
@@ -23,14 +23,14 @@ module.exports = {
 		label: {
 			normal: {
 				textStyle: {
-					color: 'rgba(255, 255, 255, 0.3)'
+					color: 'rgba(0, 0, 0, 0.4)'
 				}
 			}
 		},
 		labelLine: {
 			normal: {
 				lineStyle: {
-					color: 'rgba(255, 255, 255, 0.3)'
+					color: 'rgba(0, 0, 0, 0.3)'
 				},
 				smooth: 0.2,
 				length: 10,
