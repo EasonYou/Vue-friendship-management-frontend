@@ -108,6 +108,11 @@
 	      :total="totalPage"
 	      @current-change="handleCurrentChange">
 	    </el-pagination>
+	    <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
+		    <h2>单图上传</h2>
+		    <input type="file" name="logo">
+		    <input type="submit" value="提交">
+		</form>
 	</el-col>
 </template>
 <script>
